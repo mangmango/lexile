@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -83,7 +84,7 @@ fun SearchButton(padding: PaddingValues, onNavigateToSearch: () -> Unit) {
             contentDescription = null,
             contentScale = ContentScale.FillWidth,
             modifier = Modifier
-                .size(150.dp)
+                .size(300.dp)
                 .border(BorderStroke(0.dp, Color.White))
                 .padding(20.dp)
         )
@@ -119,5 +120,37 @@ fun MyAppNavHost(
         composable("search") {
             Search().SearchScreen(onNavigateToMain = { navController.navigate("main") })
         }
+    }
+}
+
+@Preview
+@Composable
+fun Sample() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 100.dp)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.search_logo),
+            contentDescription = null,
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier
+                .size(300.dp)
+                .border(BorderStroke(0.dp, Color.White))
+                .padding(20.dp)
+        )
+
+        ExtendedFloatingActionButton(
+            text = { Text(text = "검색하기") },
+            icon = {
+                Icon(Icons.Default.Search, contentDescription = null)
+            },
+            onClick = {},
+            backgroundColor = Color.White,
+            modifier = Modifier
+                .width(250.dp)
+        )
     }
 }
