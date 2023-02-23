@@ -1,6 +1,5 @@
 package com.example.myapplication
 
-import android.webkit.WebView
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,71 +15,69 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.navigation.NavController
 
 class Search {
-    @OptIn(ExperimentalComposeUiApi::class)
-    @Composable
-    fun SearchScreen(onNavigateToMain: () -> Unit) {
-        val (search, setSearch) = remember { mutableStateOf("") }
-        val (searchBook, setSearchBook) = remember {
-            mutableStateOf("")
-        }
+    companion object {
+        @OptIn(ExperimentalComposeUiApi::class)
+        @Composable
+        fun SearchScreen(navController: NavController) {
+            val (search, setSearch) = remember { mutableStateOf("") }
+            val (searchBook, setSearchBook) = remember {
+                mutableStateOf("")
+            }
 //        val (histories, setHistories) = remember { mutableStateOf() }
-        val keyboardController = LocalSoftwareKeyboardController.current
+            val keyboardController = LocalSoftwareKeyboardController.current
 
-        Column(
-            verticalArrangement = Arrangement.Top,
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            Scaffold(
-                topBar = {
-                    Row {
-                        IconButton(onClick = {
-                            onNavigateToMain()
-                        }) {
-                            Icon(Icons.Default.KeyboardArrowLeft, null)
-                        }
-                        OutlinedTextField(
-                            value = search,
-                            onValueChange = { setSearch(it) },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Search),
-                            placeholder = { Text("검색") },
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                focusedBorderColor = Color.White,
-                                unfocusedBorderColor = Color.White,
-                            ),
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            keyboardActions = KeyboardActions(onSearch = {
-                                setSearchBook(search)
-//                                https://www.google.com/search?tbm=bks&q=quantum+mechanics
-
-
-//                                val webViewState =
-//                                    rememberWebViewState(
-//                                        url = "www.naver.com",
-//                                        additionalHttpHeaders = emptyMap()
-//                                    )
-//                                WebView(state = webViewState)
-//                                addHistory(search)
-
-                                setSearch("")
-                                keyboardController?.hide()
-                            })
-                        )
-                    }
-                }
+            Column(
+                verticalArrangement = Arrangement.Top,
+                modifier = Modifier
+                    .fillMaxSize()
             ) {
-                Histories(paddingValues = it, text = searchBook)
+                Scaffold(
+                    topBar = {
+                        Row {
+                            IconButton(onClick = {
+                                navController.navigate("main")
+                            }) {
+                                Icon(Icons.Default.KeyboardArrowLeft, null)
+                            }
+                            OutlinedTextField(
+                                value = search,
+                                onValueChange = { setSearch(it) },
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Text,
+                                    imeAction = ImeAction.Search
+                                ),
+                                placeholder = { Text("검색") },
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    focusedBorderColor = Color.White,
+                                    unfocusedBorderColor = Color.White,
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                keyboardActions = KeyboardActions(onSearch = {
+                                    setSearchBook(search)
+
+                                    navController.navigate("search_result/$search")
+
+                                    setSearch("")
+                                    keyboardController?.hide()
+                                })
+                            )
+                        }
+                    }
+                ) {
+                    Histories(paddingValues = it, text = searchBook)
+                }
             }
         }
-    }
 
-    @Composable
-    fun Histories(paddingValues: PaddingValues, text: String) {
-        Column(modifier = Modifier.padding(top = paddingValues.calculateTopPadding())) {
-            Text(text)
+        @Composable
+        fun Histories(paddingValues: PaddingValues, text: String) {
+            Column(modifier = Modifier.padding(top = paddingValues.calculateTopPadding())) {
+                Text(text)
+            }
         }
     }
 }
