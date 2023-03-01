@@ -118,7 +118,11 @@ fun MyAppNavHost(
         }
 
         composable("search_result/{q}") {
-            SearchResult.SearchResult(q = it.arguments?.getString("q"))
+            val q = it.arguments?.getString("q")
+
+            if (q != null) {
+                SearchResult.SearchResult(q = q)
+            }
         }
 
         composable("search") {

@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,13 +31,14 @@ class Search {
             val keyboardController = LocalSoftwareKeyboardController.current
 
             Column(
-                verticalArrangement = Arrangement.Top,
                 modifier = Modifier
                     .fillMaxSize()
             ) {
                 Scaffold(
                     topBar = {
-                        Row {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             IconButton(onClick = {
                                 navController.navigate("main")
                             }) {
@@ -57,12 +59,14 @@ class Search {
                                 modifier = Modifier
                                     .fillMaxWidth(),
                                 keyboardActions = KeyboardActions(onSearch = {
-                                    setSearchBook(search)
+                                    if (search.isNotBlank()) {
+                                        setSearchBook(search)
 
-                                    navController.navigate("search_result/$search")
+                                        navController.navigate("search_result/$search")
 
-                                    setSearch("")
-                                    keyboardController?.hide()
+                                        setSearch("")
+                                        keyboardController?.hide()
+                                    }
                                 })
                             )
                         }
