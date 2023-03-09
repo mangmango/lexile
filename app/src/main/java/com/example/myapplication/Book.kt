@@ -9,11 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberAsyncImagePainter
+import coil.compose.AsyncImage
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -28,76 +29,78 @@ class Book(
 
     @Composable
     fun Component() {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .padding(20.dp),
-            ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             if (imgUrl != null) {
-                Image(
-                    painter = rememberAsyncImagePainter(imgUrl),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .wrapContentHeight()
-                        .wrapContentWidth()
+                AsyncImage(
+                    model = imgUrl,
+                    contentDescription = null
                 )
             }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                if (title != null) {
-                    Text(
-                        text = title,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                    )
-                }
-                if (authors != null) {
-                    Text(
-                        text = "저자: $authors",
-                        fontSize = 15.sp,
-                        modifier = Modifier
-                            .padding(horizontal = 20.dp),
-                    )
-                }
-                if (saleInfo != null) {
-                    Text(
-                        text = saleInfo.getString("saleability"),
-                        fontSize = 15.sp,
-                        modifier = Modifier
-                            .padding(horizontal = 20.dp),
-                    )
-                }
-            }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                if (description != null) {
-                    Text(
-                        text = description,
-                        fontWeight = FontWeight.Light,
-                        fontSize = 20.sp
-                    )
-                    Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp)) {
-                        Text("번역하기")
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(20.dp),
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (title != null) {
+                        Text(
+                            text = title,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                        )
+                    }
+                    if (authors != null) {
+                        Text(
+                            text = "저자: $authors",
+                            fontSize = 15.sp,
+                            modifier = Modifier
+                                .padding(horizontal = 20.dp),
+                        )
+                    }
+                    if (saleInfo != null) {
+                        Text(
+                            text = saleInfo.getString("saleability"),
+                            fontSize = 15.sp,
+                            modifier = Modifier
+                                .padding(horizontal = 20.dp),
+                        )
                     }
                 }
-                if (categories != null) {
-                    Text(
-                        text = "카테고리: $categories",
-                        fontSize = 15.sp,
-                        modifier = Modifier
-                            .padding(horizontal = 20.dp),
-                    )
-                }
-                if (pageCount != null) {
-                    Text(
-                        text = pageCount.toString() + "쪽",
-                        fontSize = 15.sp,
-                        modifier = Modifier
-                            .padding(horizontal = 20.dp),
-                    )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (description != null) {
+                        Text(
+                            text = description,
+                            fontWeight = FontWeight.Light,
+                            fontSize = 20.sp
+                        )
+                        Button(
+                            onClick = { /*TODO*/ },
+                            modifier = Modifier
+                                .padding(horizontal = 10.dp)
+                        ) {
+                            Text("번역하기")
+                        }
+                    }
+                    if (categories != null) {
+                        Text(
+                            text = "카테고리: $categories",
+                            fontSize = 15.sp,
+                            modifier = Modifier
+                                .padding(horizontal = 20.dp),
+                        )
+                    }
+                    if (pageCount != null) {
+                        Text(
+                            text = pageCount.toString() + "쪽",
+                            fontSize = 15.sp,
+                            modifier = Modifier
+                                .padding(horizontal = 20.dp),
+                        )
+                    }
                 }
             }
         }
@@ -112,57 +115,66 @@ fun Component() {
     val description = "대충 설명"
     val categories = JSONArray(arrayOf("과학"))
     val pageCount = 200
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .padding(20.dp),
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Image(
-            painter = rememberAsyncImagePainter("http://books.google.com/books/content?id=ppf9DwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"),
+            painter = painterResource(id = R.drawable.search_logo),
             contentDescription = null,
-            modifier = Modifier
-                .wrapContentSize()
-                .wrapContentHeight()
-                .wrapContentWidth()
         )
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = title,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-            )
-            Text(
-                text = "저자: $authors",
-                fontSize = 15.sp,
-                modifier = Modifier
-                    .padding(horizontal = 20.dp),
-            )
-        }
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = description,
-                fontWeight = FontWeight.Light,
-                fontSize = 20.sp
-            )
-            Button(
-                onClick = { /*TODO*/ },
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)) {
-                Text("번역하기")
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+//                .padding(20.dp)
+                .weight(1f),
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                )
+                Text(
+                    text = "저자: $authors",
+                    fontSize = 15.sp,
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp),
+                )
+                Text(
+                    text = "NOT_SALE",
+                    fontSize = 15.sp,
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp),
+                )
             }
-            Text(
-                text = "카테고리: $categories",
-                fontSize = 15.sp,
-                modifier = Modifier
-                    .padding(horizontal = 20.dp),
-            )
-            Text(
-                text = pageCount.toString(),
-                fontSize = 15.sp,
-                modifier = Modifier
-                    .padding(horizontal = 20.dp),
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = description,
+                    fontWeight = FontWeight.Light,
+                    fontSize = 20.sp
+                )
+                Button(
+                    onClick = { /*TODO*/ },
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                ) {
+                    Text("번역하기")
+                }
+                Text(
+                    text = "카테고리: $categories",
+                    fontSize = 15.sp,
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp),
+                )
+                Text(
+                    text = pageCount.toString() + "쪽",
+                    fontSize = 15.sp,
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp),
+                )
+            }
         }
     }
 }
